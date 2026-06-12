@@ -5,6 +5,7 @@ import com.ecommerce.shop_api.dto.api.ProductDto;
 import com.ecommerce.shop_api.mapper.api.ProductApiMapper;
 import com.ecommerce.shop_api.model.Product;
 import com.ecommerce.shop_api.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class ProductApiController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> create(@RequestBody ProductCreateRequest req) {
+    public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductCreateRequest req) {
 
         Product product = ProductApiMapper.toEntity(req);
         Product saved = productService.create(product);
@@ -50,7 +51,7 @@ public class ProductApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable Long id,
-                                             @RequestBody ProductCreateRequest req) {
+                                             @Valid @RequestBody ProductCreateRequest req) {
 
         Product existing = productService.findById(id);
 
