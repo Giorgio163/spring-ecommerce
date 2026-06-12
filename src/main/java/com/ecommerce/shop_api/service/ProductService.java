@@ -1,6 +1,7 @@
 package com.ecommerce.shop_api.service;
 
 
+import com.ecommerce.shop_api.exception.ProductNotFoundException;
 import com.ecommerce.shop_api.model.Product;
 import com.ecommerce.shop_api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return repo.findById(id).orElseThrow();
+        return repo.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public void delete(Long id) {

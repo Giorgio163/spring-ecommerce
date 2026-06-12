@@ -5,6 +5,8 @@ import com.ecommerce.shop_api.dto.api.ProductDto;
 import com.ecommerce.shop_api.mapper.api.ProductApiMapper;
 import com.ecommerce.shop_api.model.Product;
 import com.ecommerce.shop_api.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +22,35 @@ public class ProductApiController {
     }
 
     @GetMapping
-    public List<ProductDto> getAll() {
-        return productService.getAll()
+    public ResponseEntity<List<ProductDto>> getAll() {
+        List<ProductDto> list = productService.getAll()
                 .stream()
                 .map(ProductApiMapper::toDto)
                 .toList();
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public ProductDto getById(@PathVariable Long id) {
-        return ProductApiMapper.toDto(productService.findById(id));
+    public ResponseEntity<ProductDto> getById(@PathVariable Long id) {
+        Product product = productService.findById(id);
+        return ResponseEntity.ok(ProductApiMapper.toDto(product));
     }
 
     @PostMapping
-    public ProductDto create(@RequestBody ProductCreateRequest request) {
-        Product product = ProductApiMapper.toEntity(request);
-        return ProductApiMapper.toDto(productService.create(product));
+    public ResponseEntity<ProductDto> create(@RequestBody ProductCreateRequest req) {
+
+        Product product = ProductApiMapper.toEntity(req);
+        Product saved = productService.create(product);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ProductApiMapper.toDto(saved));
     }
 
     @PutMapping("/{id}")
-    public ProductDto update(@PathVariable Long id,
-                             @RequestBody ProductCreateRequest req) {
+    public ResponseEntity<ProductDto> update(@PathVariable Long id,
+                                             @RequestBody ProductCreateRequest req) {
 
         Product existing = productService.findById(id);
 
@@ -49,11 +59,12 @@ public class ProductApiController {
 
         Product updated = productService.create(existing);
 
-        return ProductApiMapper.toDto(updated);
+        return ResponseEntity.ok(ProductApiMapper.toDto(updated));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
