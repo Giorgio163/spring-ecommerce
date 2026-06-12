@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="container">
+
+<h1>🛒 Cart</h1>
+
+<a href="/shop/products">⬅ Back to products</a>
+
+<br><br>
+
+<table border="1">
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th>Action</th>
+    </tr>
+
+    <tr th:each="c : ${cart}">
+        <td th:text="${c.name}"></td>
+
+        <td th:text="${c.price}"></td>
+
+        <td>
+            <a th:href="@{'/cart/decrease/' + ${c.id}}">➖</a>
+            <span th:text="${c.quantity}"></span>
+            <a th:href="@{'/cart/increase/' + ${c.id}}">➕</a>
+        </td>
+
+        <td th:text="${c.price * c.quantity}"></td>
+
+        <td>
+            <a th:href="@{'/cart/remove/' + ${c.id}}">🗑 Remove</a>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<h3>
+    Total: <span th:text="${total}"></span>
+</h3>
+<br><br>
+
+<div th:if="${!#lists.isEmpty(cart)}">
+
+    <form th:action="@{/checkout}" method="post">
+        <button type="submit">
+            💳 Checkout
+        </button>
+    </form>
+
+</div>
+</div>
+
+</body>
+</html>

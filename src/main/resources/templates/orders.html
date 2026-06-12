@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="container">
+
+<h1>📦 My Orders</h1>
+
+<a href="/shop/products">⬅ Back to shop</a>
+
+<br><br>
+
+<div th:each="o : ${orders}">
+    <h3>Order #<span th:text="${o.id}"></span></h3>
+
+    <p>Total: <span th:text="${o.total}"></span></p>
+
+    <ul>
+        <li th:each="i : ${o.items}">
+            <span th:text="${i.productName}"></span>
+            - x<span th:text="${i.quantity}"></span>
+            - €<span th:text="${i.price}"></span>
+        </li>
+    </ul>
+
+    <hr>
+</div>
+</div>
+
+</body>
+</html>
