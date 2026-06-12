@@ -1,4 +1,4 @@
-# 🛒 Shop API - Spring Boot Ecommerce
+# 🛒 Spring Boot Ecommerce Web Application
 
 Spring Boot ecommerce demo con autenticazione, carrello, ordini e pannello admin.
 
