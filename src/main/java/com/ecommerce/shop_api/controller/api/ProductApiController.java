@@ -5,15 +5,18 @@ import com.ecommerce.shop_api.dto.api.ProductDto;
 import com.ecommerce.shop_api.mapper.api.ProductApiMapper;
 import com.ecommerce.shop_api.model.Product;
 import com.ecommerce.shop_api.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@Tag(name = "Products API", description = "CRUD operations for products")
 public class ProductApiController {
 
     private final ProductService productService;
@@ -22,6 +25,7 @@ public class ProductApiController {
         this.productService = productService;
     }
 
+    @Operation(summary = "Get all products")
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAll() {
         List<ProductDto> list = productService.getAll()
@@ -32,12 +36,14 @@ public class ProductApiController {
         return ResponseEntity.ok(list);
     }
 
+    @Operation(summary = "Get product by ID")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable Long id) {
         Product product = productService.findById(id);
         return ResponseEntity.ok(ProductApiMapper.toDto(product));
     }
 
+    @Operation(summary = "Create a new product")
     @PostMapping
     public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductCreateRequest req) {
 
@@ -49,6 +55,7 @@ public class ProductApiController {
                 .body(ProductApiMapper.toDto(saved));
     }
 
+    @Operation(summary = "Update an existing product")
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable Long id,
                                              @Valid @RequestBody ProductCreateRequest req) {
@@ -64,6 +71,7 @@ public class ProductApiController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a product by ID")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
