@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -36,6 +37,7 @@ public class ProductApiController {
         return ResponseEntity.ok(list);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get product by ID")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable Long id) {
@@ -43,6 +45,7 @@ public class ProductApiController {
         return ResponseEntity.ok(ProductApiMapper.toDto(product));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Create a new product")
     @PostMapping
     public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductCreateRequest req) {
@@ -55,6 +58,7 @@ public class ProductApiController {
                 .body(ProductApiMapper.toDto(saved));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update an existing product")
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable Long id,
@@ -70,6 +74,7 @@ public class ProductApiController {
         return ResponseEntity.ok(ProductApiMapper.toDto(updated));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a product by ID")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
