@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.ecommerce.shop_api.security.jwt.JwtFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,11 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/auth/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/v1/products/**"
                         ).permitAll()
 
                         .anyRequest().authenticated()

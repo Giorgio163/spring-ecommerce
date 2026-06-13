@@ -1,20 +1,27 @@
 package com.ecommerce.shop_api.security.jwt;
 
-import com.ecommerce.shop_api.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
 @Service
+@Getter
+@Setter
+@ConfigurationProperties(prefix = "jwt")
 public class JwtService {
 
-    private static final String SECRET = "my-secret-key-my-secret-key-my-secret-key-123456";
-    private static final long EXPIRATION = 1000 * 60 * 60; // 1 ora
+    private String secret;
+    private long expiration;
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public String generateToken(String email, String role) {
 
@@ -22,14 +29,16 @@ public class JwtService {
                 .setSubject(email)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + expiration)
+                )
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -46,12 +55,13 @@ public class JwtService {
     }
 
     public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
+        return extractAllClaims(token)
+                .get("role", String.class);
     }
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
