@@ -37,7 +37,6 @@ public class ProductApiController {
         return ResponseEntity.ok(list);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get product by ID")
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable Long id) {
