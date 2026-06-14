@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -24,9 +26,10 @@ public class CartController {
 
         var cart = service.getCart(auth.getName());
 
-        double total = cart.stream()
-                .mapToDouble(c -> c.getPrice() * c.getQuantity())
-                .sum();
+        BigDecimal total = cart.stream()
+                .map(c -> c.getPrice()
+                        .multiply(BigDecimal.valueOf(c.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         model.addAttribute("cart", cart);
         model.addAttribute("total", total);

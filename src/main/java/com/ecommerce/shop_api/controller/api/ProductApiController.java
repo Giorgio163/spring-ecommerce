@@ -7,13 +7,15 @@ import com.ecommerce.shop_api.model.Product;
 import com.ecommerce.shop_api.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -28,13 +30,14 @@ public class ProductApiController {
 
     @Operation(summary = "Get all products")
     @GetMapping
-    public ResponseEntity<List<ProductDto>> getAll() {
-        List<ProductDto> list = productService.getAll()
-                .stream()
-                .map(ProductApiMapper::toDto)
-                .toList();
+    public ResponseEntity<Page<ProductDto>> getAll(
+            @ParameterObject Pageable pageable
+    ) {
+        Page<ProductDto> page =
+                productService.getAll(pageable)
+                        .map(ProductApiMapper::toDto);
 
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(page);
     }
 
     @Operation(summary = "Get product by ID")
@@ -63,12 +66,7 @@ public class ProductApiController {
     public ResponseEntity<ProductDto> update(@PathVariable Long id,
                                              @Valid @RequestBody ProductCreateRequest req) {
 
-        Product existing = productService.findById(id);
-
-        existing.setName(req.getName());
-        existing.setPrice(req.getPrice());
-
-        Product updated = productService.create(existing);
+        Product updated = productService.update(id, req);
 
         return ResponseEntity.ok(ProductApiMapper.toDto(updated));
     }

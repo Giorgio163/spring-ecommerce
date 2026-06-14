@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_items")
 @Getter
@@ -16,6 +18,6 @@ public class OrderItem {
 
     private Long productId;
     private String productName;
-    private double price;
+    private BigDecimal price;
     private int quantity;
 }

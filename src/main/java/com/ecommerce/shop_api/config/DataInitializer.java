@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -59,23 +60,33 @@ public class DataInitializer implements CommandLineRunner {
         if (productRepo.count() == 0) {
 
             List<Product> products = List.of(
-                    create("iPhone 15", 999),
-                    create("MacBook Pro", 2499),
-                    create("AirPods Pro", 249),
-                    create("iPad Air", 799),
-                    create("Nike Shoes", 120),
-                    create("T-Shirt", 25),
-                    create("Gaming Chair", 350),
-                    create("4K Monitor", 450),
-                    create("Mechanical Keyboard", 99),
-                    create("Gaming Mouse", 49)
+                    create("iPhone 15", BigDecimal.valueOf(999)),
+                    create("MacBook Pro", BigDecimal.valueOf(2499)),
+                    create("AirPods Pro", BigDecimal.valueOf(249)),
+                    create("iPad Air", BigDecimal.valueOf(799)),
+                    create("Nike Shoes", BigDecimal.valueOf(120)),
+                    create("T-Shirt", BigDecimal.valueOf(25)),
+                    create("Gaming Chair", BigDecimal.valueOf(350)),
+                    create("4K Monitor", BigDecimal.valueOf(450)),
+                    create("Mechanical Keyboard", BigDecimal.valueOf(99)),
+                    create("Gaming Mouse", BigDecimal.valueOf(49)),
+                    create("iPhone 18", BigDecimal.valueOf(999)),
+                    create("MacBook Pro M4", BigDecimal.valueOf(2499)),
+                    create("AirPods Pro V2", BigDecimal.valueOf(249)),
+                    create("iPad Air 256GB", BigDecimal.valueOf(799)),
+                    create("Nike Shoes Yellow", BigDecimal.valueOf(120)),
+                    create("T-Shirt white", BigDecimal.valueOf(25)),
+                    create("Gaming Chair professional", BigDecimal.valueOf(350)),
+                    create("4K Monitor used", BigDecimal.valueOf(450)),
+                    create("Mechanical Keyboard new", BigDecimal.valueOf(99)),
+                    create("Gaming Mouse blue", BigDecimal.valueOf(499))
             );
 
             productRepo.saveAll(products);
         }
     }
 
-    private Product create(String name, double price) {
+    private Product create(String name, BigDecimal price) {
         Product p = new Product();
         p.setName(name);
         p.setPrice(price);

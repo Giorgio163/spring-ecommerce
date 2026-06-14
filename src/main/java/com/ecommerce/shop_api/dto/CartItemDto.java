@@ -3,6 +3,8 @@ package com.ecommerce.shop_api.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class CartItemDto {
@@ -10,6 +12,6 @@ public class CartItemDto {
     private Long id;
     private Long productId;
     private String name;
-    private Double price;
+    private BigDecimal price;
     private Integer quantity;
 }

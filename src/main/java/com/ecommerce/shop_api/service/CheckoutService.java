@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class CheckoutService {
         Order order = new Order();
         order.setUser(user);
 
-        double total = 0;
+        BigDecimal total = BigDecimal.valueOf(0);
 
         for (CartItem c : cart) {
 
@@ -52,7 +53,10 @@ public class CheckoutService {
 
             order.addItem(item);
 
-            total += c.getPrice() * c.getQuantity();
+            total = total.add(
+                    c.getPrice()
+                            .multiply(BigDecimal.valueOf(c.getQuantity()))
+            );
         }
 
         order.setTotal(total);
