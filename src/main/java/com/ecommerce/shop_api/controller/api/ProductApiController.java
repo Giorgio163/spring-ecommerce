@@ -19,7 +19,10 @@ import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/v1/products")
-@Tag(name = "Products API", description = "CRUD operations for products")
+@Tag(
+        name = "02. Products API",
+        description = "CRUD operations for products"
+)
 public class ProductApiController {
 
     private final ProductService productService;

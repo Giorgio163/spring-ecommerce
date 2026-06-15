@@ -129,4 +129,4 @@ On startup, the application creates:
 
 - Swagger available at `/swagger-ui/index.html`
 - JWT is required for protected endpoints
-- Clean layered architecture: Controller → Service → Repository
+- Clean-layered architecture: Controller → Service → Repository

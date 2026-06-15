@@ -48,6 +48,7 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        repo.deleteById(id);
+        Product product = findById(id);
+        repo.delete(product);
     }
 }

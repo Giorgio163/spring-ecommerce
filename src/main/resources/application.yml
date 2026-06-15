@@ -23,3 +23,7 @@ jwt:
 
 flyway:
   enabled: true
+
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
