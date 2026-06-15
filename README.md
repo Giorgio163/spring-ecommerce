@@ -1,98 +1,202 @@
-# 🛒 Spring Boot Ecommerce Web Application
+# 🛒 Spring Boot Ecommerce API
 
-A Spring Boot ecommerce demo project with JWT authentication, cart, orders, and admin panel.
+A RESTful ecommerce application built with Spring Boot that demonstrates authentication, authorization, shopping cart management, checkout processing, order management, and product administration.
 
----
-
-## 🚀 Tech Stack
-
-- Java 17+
-- Spring Boot 3
-- Spring Security (JWT Authentication)
-- Spring Data JPA
-- Swagger / OpenAPI
-- PostgreSQL
-- Docker
-- JUnit 5 + Mockito + MockMvc
+This project was created to strengthen backend development skills using modern Java and Spring technologies.
 
 ---
 
-## ⚙️ How to Run the Project
+## 🚀 Features
 
-### 🟢 Start Database (Docker)
+### Authentication & Authorization
+
+* JWT Authentication
+* User Registration
+* User Login
+* Role-based authorization (USER / ADMIN)
+
+### Product Management
+
+* Create products
+* Update products
+* Delete products
+* Product listing with pagination
+* Product details endpoint
+
+### Shopping Cart
+
+* Add products to cart
+* Remove products from cart
+* Update quantities
+* View current cart
+
+### Orders
+
+* Checkout process
+* Order creation
+* View user orders
+* Order details
+
+### API Documentation
+
+* Swagger / OpenAPI integration
+* Interactive endpoint testing
+
+---
+
+## 🏗 Architecture
+
+The application follows a layered architecture:
+
+Controller → Service → Repository → Database
+
+Responsibilities:
+
+* Controller: request handling and validation
+* Service: business logic
+* Repository: database access
+* Security: JWT authentication and authorization
+
+---
+
+## 🛠 Tech Stack
+
+* Java 21
+* Spring Boot 3.5
+* Spring Security
+* JWT Authentication
+* Spring Data JPA
+* PostgreSQL
+* Flyway Database Migrations
+* Swagger / OpenAPI
+* Docker
+* JUnit 5
+* Mockito
+* MockMvc
+* Maven
+
+---
+
+## ⚙️ Running the Project
+
+### Start PostgreSQL
+
 ```bash
-docker compose up --build
+docker compose up -d
 ```
 
-### ▶️ Run Application
+### Run Application
+
 ```bash
 mvn spring-boot:run
 ```
 
----
+Application:
 
-## 📚 API Documentation (Swagger)
-
-Once the application is running:
-
-👉 http://localhost:8080/swagger-ui/index.html
-
-From here you can:
-- View all Product APIs
-- Test endpoints directly from the browser
-- Try secured endpoints with JWT authentication
-
----
-
-## 🔐 JWT Authentication
-
-This project uses JWT for security.
-
-### Flow:
-1. Login via `/auth/login`
-2. Receive JWT token
-3. Use token in protected requests:
-
+```text
+http://localhost:8080
 ```
-Authorization: Bearer <token>
+
+Swagger:
+
+```text
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
 
-## 👤 Default Users
+## 🔐 Authentication
 
-Created automatically on startup:
+Login endpoint:
 
-### ADMIN
-- email: admin@test.com  
-- password: admin  
-- access: /admin
+```http
+POST /api/v1/auth/login
+```
 
-### USER
-- email: user@test.com  
-- password: user 
-- access: /shop/products
+Example response:
+
+```json
+{
+  "token": "jwt-token"
+}
+```
+
+Use the token in protected requests:
+
+```http
+Authorization: Bearer <jwt-token>
+```
 
 ---
 
-## 🛒 Features
+## 👤 Demo Accounts
 
-- Product listing (Shop API + UI)
-- Product details
-- Shopping cart with quantities
-- Simulated checkout
-- User orders
-- Admin product panel
-- Login / Register system
-- Role-based access (USER / ADMIN)
+### Admin
+
+Email:
+
+```text
+admin@test.com
+```
+
+Password:
+
+```text
+admin
+```
+
+Role:
+
+```text
+ADMIN
+```
+
+### User
+
+Email:
+
+```text
+user@test.com
+```
+
+Password:
+
+```text
+user
+```
+
+Role:
+
+```text
+USER
+```
 
 ---
 
 ## 🧪 Testing
 
-The project includes some tests:
+The project contains:
 
-### Run tests
+### Controller Tests
+
+* Product API
+* Cart API
+* Order API
+* Checkout API
+* Authentication API
+
+### Service Tests
+
+* ProductService
+
+Technologies used:
+
+* JUnit 5
+* Mockito
+* MockMvc
+
+Run all tests:
+
 ```bash
 mvn test
 ```
@@ -101,32 +205,43 @@ mvn test
 
 ## 🗄 Database
 
-PostgreSQL connection:
+PostgreSQL is used as the primary database.
 
-```
-jdbc:postgresql://localhost:5432/shopdb
-```
+Main entities:
 
-Main tables:
-- users
-- products
-- cart_items
-- orders
-- order_items
+* Users
+* Products
+* CartItems
+* Orders
+* OrderItems
 
----
-
-## 📦 Data Initialization
-
-On startup, the application creates:
-
-- Admin + User accounts
-- 10 demo products
+Database migrations are managed through Flyway.
 
 ---
 
-## 📌 Notes
+## 📦 Sample Data
 
-- Swagger available at `/swagger-ui/index.html`
-- JWT is required for protected endpoints
-- Clean-layered architecture: Controller → Service → Repository
+At startup the application automatically creates:
+
+* Admin account
+* User account
+* Demo products
+
+This allows immediate testing without manual setup.
+
+---
+
+## 📚 Skills Demonstrated
+
+* REST API Design
+* Spring Security
+* JWT Authentication
+* Role-Based Access Control
+* Dependency Injection
+* JPA/Hibernate
+* Database Migrations
+* Unit Testing
+* Controller Testing
+* Docker Integration
+* Clean Architecture
+

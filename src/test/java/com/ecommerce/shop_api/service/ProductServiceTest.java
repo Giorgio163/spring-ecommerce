@@ -89,9 +89,15 @@ class ProductServiceTest {
     @Test
     void shouldDeleteProduct() {
 
+        Product product = new Product();
+        product.setId(1L);
+
+        when(repo.findById(1L))
+                .thenReturn(Optional.of(product));
+
         service.delete(1L);
 
-        verify(repo).deleteById(1L);
+        verify(repo).delete(product);
     }
 
     @Test

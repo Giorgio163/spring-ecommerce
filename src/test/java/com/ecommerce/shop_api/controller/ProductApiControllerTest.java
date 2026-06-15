@@ -18,11 +18,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -68,7 +69,7 @@ class ProductApiControllerTest {
         product.setId(1L);
         product.setName("Laptop");
 
-        when(productService.findById(1L))
+        when(productService.findById(anyLong()))
                 .thenReturn(product);
 
         mockMvc.perform(get("/api/v1/products/1"))
@@ -76,12 +77,37 @@ class ProductApiControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser
     void shouldDeleteProduct() throws Exception {
 
         doNothing().when(productService).delete(1L);
 
         mockMvc.perform(delete("/api/v1/products/1"))
                 .andExpect(status().isNoContent());
+
+        verify(productService).delete(1L);
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void adminCanCreateProduct() throws Exception {
+
+        Product product = new Product();
+        product.setId(1L);
+
+        when(productService.create(any()))
+                .thenReturn(product);
+
+        mockMvc.perform(
+                        post("/api/v1/products")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                    {
+                        "name":"Laptop",
+                        "price":1200
+                    }
+                    """)
+                )
+                .andExpect(status().isCreated());
     }
 }
